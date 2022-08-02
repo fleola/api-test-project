@@ -11,8 +11,8 @@
     "build": "tsc",
     "lint": "eslint src/ --cache --fix",
     "build:dev": "tsc --watch",
-    "start": "node --enable-source-maps dist/server.js",
-    "start:dev": "nodemon --watch dist/",
+    "start": "node --enable-source-maps ./dist/server.js",
+    "start:dev": "nodemon --watch dist dist/server.js",
     "dev": "npm run build && concurrently 'npm:build:dev' 'npm:start:dev'"
   },
   "repository": {
