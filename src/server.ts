@@ -1,5 +1,15 @@
-const nome = "Leo"
+import express from "express"
 
-console.log(`Hello ${nome}`)
+import "express-async-errors"
 
-throw new Error("errore gravissimo")
+const app = express()
+
+app.get("/", (request, response) => {
+    response.send("Up and running!")
+})
+
+const port = 3000
+
+app.listen(port, () => {
+    console.log(`[server]: Server running at https://localhost:${port}`)
+})
