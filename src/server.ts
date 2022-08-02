@@ -1,14 +1,7 @@
-import express from "express"
+import "dotenv/config"
+import app from "./app"
 
-import "express-async-errors"
-
-const app = express()
-
-app.get("/", (request, response) => {
-    response.send("Up and running!")
-})
-
-const port = 3000
+const port = process.env.PORT
 
 app.listen(port, () => {
     console.log(`[server]: Server running at https://localhost:${port}`)
