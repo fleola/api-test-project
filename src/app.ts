@@ -12,12 +12,30 @@ const app = express()
 
 app.use(express.json())
 
+//GET all planets route
 app.get("/planets", async (request, response) => {
     const planets = await prisma.planet.findMany()
 
     response.json(planets)
 })
 
+//GET a planet route
+app.get("/planets/:id(\\d+)", async (request, response, next) => {
+    const planetId = Number(request.params.id)
+
+    const planet = await prisma.planet.findUnique({
+        where: { id: planetId }
+    })
+
+    if (!planet) {
+        response.status(404)
+        return next(`Cannot GET /planets/${planetId}`)
+    }
+
+    response.json(planet)
+})
+
+//POST a planet route
 app.post("/planets", validate({ body: planetSchema }), async (request, response) => {
     const planetData: PlanetData = request.body;
 
