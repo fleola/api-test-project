@@ -1,6 +1,7 @@
 import express from "express"
 import "express-async-errors"
 import prisma from "./lib/prisma/client"
+import cors from "cors"
 import {
     validate,
     PlanetData,
@@ -10,7 +11,12 @@ import {
 
 const app = express()
 
+const corsOptions = {
+    origin: "http://localhost:8080"
+}
 app.use(express.json())
+
+app.use(cors(corsOptions))
 
 //GET all planets route
 app.get("/planets", async (request, response) => {
