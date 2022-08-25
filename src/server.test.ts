@@ -132,3 +132,87 @@ describe("POST /planets", () => {
         })
     })
 });
+
+//PUT /planets/:id suite
+describe("PUT /planets", () => {
+    test("Valid Request", async () => {
+        const planet = {
+            id: 3,
+            name: "Mercury",
+            description: "Wonderful planet",
+            diameter: 1234,
+            moon: 12,
+            createdAt: "2022-08-25T09:44:30.770Z",
+            updatedAt: "2022-08-25T09:44:30.774Z"
+        };
+
+        //@ts-ignore
+        prismaMock.planet.update.mockResolvedValue(planet)
+
+        const response = await request
+            .put("/planets/3")
+            .send({
+                name: "Mercury",
+                description: "Wonderful planet",
+                diameter: 1234,
+                moon: 12,
+            })
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+
+        expect(response.body).toEqual(planet)
+    });
+
+    test("Invalid Request", async () => {
+        const planet = {
+            diameter: 1234,
+            moon: 12,
+        }
+        const response = await request
+            .put("/planets/23")
+            .send(planet)
+            .expect(422)
+            .expect("Content-Type", /application\/json/)
+        expect(response.body).toEqual({
+            errors: {
+                body: expect.any(Array)
+            }
+        })
+    })
+
+    test("Planet does not exist", async () => {
+        //@ts-ignore
+        prismaMock.planet.update.mockRejectedValue(new Error("Error"))
+
+        const response = await request
+            .put("/planets/23")
+            .send({
+                name: "Mercury",
+                description: "Wonderful planet",
+                diameter: 1234,
+                moon: 12,
+            })
+            .expect(404)
+            .expect("Content-Type", /text\/html/)
+
+        expect(response.text).toContain("Cannot PUT /planets/23")
+    });
+
+    test("Invalid planet ID", async () => {
+        const response = await request
+            .put("/planets/asdf")
+            .send({
+                id: 3,
+                name: "Mercury",
+                description: "Wonderful planet",
+                diameter: 1234,
+                moon: 12,
+                createdAt: "2022-08-25T09:44:30.770Z",
+                updatedAt: "2022-08-25T09:44:30.774Z"
+            })
+            .expect(404)
+            .expect("Content-Type", /text\/html/)
+
+        expect(response.text).toContain("Cannot PUT /planets/asdf")
+    })
+});
