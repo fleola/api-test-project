@@ -268,7 +268,7 @@ describe("POST /planets/:id/photo", () => {
     test("Valid request with JPG file upload", async () => {
         await request
             .post("/planets/1/photo")
-            .attach("photo", "test-fixtures/photos/file.jpg")
+            .attach("photo", "test-fixtures/photos/file.jpeg")
             .expect(201)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080")
     });
