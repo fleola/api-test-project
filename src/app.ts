@@ -89,8 +89,6 @@ app.delete("/planets/:id(\\d+)", async (request, response, next) => {
 
 //POST a photo
 app.post("/planets/:id(\\d+)/photo", upload.single("photo"), async (request, response, next) => {
-    console.log("request.file", request.file)
-
     if (!request.file) {
         response.status(400)
         return next("No photo file uploaded.")
