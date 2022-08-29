@@ -254,3 +254,28 @@ describe("DELETE /planets:id", () => {
         expect(response.text).toContain("Cannot DELETE /planets/asdf")
     })
 })
+
+//POST a photo suite
+describe("POST /planets/:id/photo", () => {
+    test("Valid request with PNG file upload", async () => {
+        await request
+            .post("/planets/1/photo")
+            .attach("photo", "test-fixtures/photos/file.png")
+            .expect(201)
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+    })
+    test("Invalid planet ID", async () => {
+        const response = await request
+            .post("/planets/asdf/photo")
+            .expect(404)
+            .expect("Content-Type", /text\/html/)
+        expect(response.text).toContain("Cannot POST /planets/asdf/photo")
+    });
+    test("Invalid request with no file uploaded", async () => {
+        const response = await request
+            .post("/planets/1/photo")
+            .expect(400)
+            .expect("Content-Type", /text\/html/)
+        expect(response.text).toContain("No photo file uploaded.")
+    })
+})
