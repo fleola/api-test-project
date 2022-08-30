@@ -5,6 +5,10 @@
         "sourceMap": true,
     },
     "include": ["./src/**/*.ts"],
-    "exclude": ["./src/**/*.test.ts"]
-    
+    "exclude": ["./src/**/*.test.ts"],
+    "lib": [
+        "es2019",
+        "dom",
+        "dom.iterable"
+      ],   
 }
