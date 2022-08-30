@@ -17,6 +17,8 @@ model Planet{
     diameter        Int
     moon            Int
     photoFilename   String?         @db.VarChar(255)
+    createdBy       String?         @db.VarChar(255)
     createdAt       DateTime        @default(now())
+    updatedBy       String?         @db.VarChar(255)
     updatedAt       DateTime        @updatedAt   
 }
