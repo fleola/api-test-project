@@ -14,9 +14,10 @@ router.get("/login", (request, response, next) => {
     response.redirect("/auth/github/login")
 })
 
-router.get("/auth/github/login", passport.authenticate("github", { scope: ["user:email"] }))
+router.get("/github/login", passport.authenticate("github", { scope: ["user:email"] }))
 
 router.get("/github/callback",
+    //@ts-ignore
     passport.authenticate("github",
         {
             failureRedirect: "/auth/github/login",
@@ -29,7 +30,7 @@ router.get("/github/callback",
 
         response.redirect(request.session.redirectTo)
     }
-)
+);
 
 router.get("/logout", (request, response, next) => {
     if (typeof request.query.redirectTo !== "string" || !request.query.redirectTo) {
@@ -38,7 +39,7 @@ router.get("/logout", (request, response, next) => {
     }
 
     const redirectUrl = request.query.redirectTo
-    request.logOut((error) => {
+    request.logout((error) => {
         if (error) {
             return next(error)
         }
