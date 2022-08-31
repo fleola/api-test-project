@@ -75,18 +75,18 @@ describe("GET /planets:id", () => {
         const response = await request
             .get("/planets/23")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot GET /planets/23")
+        expect(response.body.message).toContain("Cannot GET /planets/23")
     });
 
     test("Invalid planet ID", async () => {
         const response = await request
             .get("/planets/asdf")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot GET /planets/asdf")
+        expect(response.body.message).toContain("Cannot GET /planets/asdf")
     })
 })
 
@@ -201,9 +201,9 @@ describe("PUT /planets", () => {
                 moon: 12,
             })
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot PUT /planets/23")
+        expect(response.body.message).toContain("Cannot PUT /planets/23")
     });
 
     test("Invalid planet ID", async () => {
@@ -219,20 +219,19 @@ describe("PUT /planets", () => {
                 updatedAt: "2022-08-25T09:44:30.774Z"
             })
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot PUT /planets/asdf")
+        expect(response.body.message).toContain("Cannot PUT /planets/asdf")
     })
 });
 
 // DELETE planet suite 
 describe("DELETE /planets:id", () => {
     test("Valid Request", async () => {
-        const response = await request
+        await request
             .delete("/planets/1")
             .expect(204)
 
-        expect(response.text).toEqual("")
     });
 
     test("Planet does not exist", async () => {
@@ -242,20 +241,20 @@ describe("DELETE /planets:id", () => {
         const response = await request
             .delete("/planets/23")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080")
             .expect("Access-Control-Allow-Credentials", "true")
 
-        expect(response.text).toContain("Cannot DELETE /planets/23")
+        expect(response.body.message).toContain("Cannot DELETE /planets/23")
     });
 
     test("Invalid planet ID", async () => {
         const response = await request
             .delete("/planets/asdf")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot DELETE /planets/asdf")
+        expect(response.body.message).toContain("Cannot DELETE /planets/asdf")
     })
 })
 
@@ -284,9 +283,9 @@ describe("POST /planets/:id/photo", () => {
             .post("/planets/1/photo")
             .attach("photo", "test-fixtures/photos/file.txt")
             .expect(500)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Error: The uploaded file must be a JPG or a PNG image.")
+        expect(response.body.message).toContain("Error: The uploaded file must be a JPG or a PNG image.")
     });
 
     test("Planet does not exist", async () => {
@@ -295,22 +294,22 @@ describe("POST /planets/:id/photo", () => {
             .post("/planets/23/photo")
             .attach("photo", "test-fixtures/photos/file.png")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
+            .expect("Content-Type", /application\/json/)
 
-        expect(response.text).toContain("Cannot POST /planets/23/photo")
+        expect(response.body.message).toContain("Cannot POST /planets/23/photo")
     })
     test("Invalid planet ID", async () => {
         const response = await request
             .post("/planets/asdf/photo")
             .expect(404)
-            .expect("Content-Type", /text\/html/)
-        expect(response.text).toContain("Cannot POST /planets/asdf/photo")
+            .expect("Content-Type", /application\/json/)
+        expect(response.body.message).toContain("Cannot POST /planets/asdf/photo")
     });
     test("Invalid request with no file uploaded", async () => {
         const response = await request
             .post("/planets/1/photo")
             .expect(400)
-            .expect("Content-Type", /text\/html/)
-        expect(response.text).toContain("No photo file uploaded.")
+            .expect("Content-Type", /application\/json/)
+        expect(response.body.message).toContain("No photo file uploaded.")
     })
 })
